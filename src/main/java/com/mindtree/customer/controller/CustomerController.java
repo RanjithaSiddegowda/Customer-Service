@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindtree.customer.dto.Customer;
 import com.mindtree.customer.service.CustomerService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,15 +36,18 @@ public class CustomerController{
 	 * @return the customer details
 	 */
 	@GetMapping("")
-	@HystrixCommand(fallbackMethod = "failure")
+	//@HystrixCommand(fallbackMethod = "failure")
 	public ResponseEntity<List<Customer>> getCustomerDetails() {
 		log.info("CustomerController :: getCustomerDetails {} :: entry");
 		List<Customer> result = customerService.getCustomerList();
+		result.forEach(i->{
+			System.out.println("*************"+i);
+		});
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	public String failure() {
-		return FAILURE_MESSAGE;
+	public ResponseEntity<String> failure() {
+		return new ResponseEntity<>(FAILURE_MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	/**
