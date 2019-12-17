@@ -40,9 +40,6 @@ public class CustomerController{
 	public ResponseEntity<List<Customer>> getCustomerDetails() {
 		log.info("CustomerController :: getCustomerDetails {} :: entry");
 		List<Customer> result = customerService.getCustomerList();
-		result.forEach(i->{
-			System.out.println("*************"+i);
-		});
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
